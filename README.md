@@ -1,6 +1,9 @@
 # PES_ASIC_Class
 Name: Srinidhi B S        SRN: PES1UG20EC201
-### Day 1
+<details>
+<summary>Day 1</summary>
+  
+**Day 1**
 + Run sum1ton.c
 ```
 gcc sum1ton.c
@@ -32,6 +35,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
     + Also finding out what happens when value assigned is beyond datatype range
       
   <img width="559" alt="usnmaxf" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/cea84d41-2cfa-49e8-a999-ad6530e8dcd4">
+</details>
 
 ### Day 2
 
