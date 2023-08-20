@@ -55,8 +55,56 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 
 
 ## Day 2
+<details>
+<summary>Create cnt1t9.c and load.S</summary>
+  
++ create files
+```
+leafpad cnt1t9.c
+leafpad load.S
+```
+</details>
+
+<details>
+<summary>Run and simulate using spike</summary>
+  
++ Run c program file and function in assemly language
+```
+riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o cnt1t9.o cnt1t9.c load.S
+spike pk cnt1tn.o
+```
+<img width="571" alt="D2run2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/09798d44-3a40-42da-a274-99496613d647">
 
 
+</details>
 
+<details>
+<summary>Run disassembly</summary>  
+
+```
+riscv64-unknown-elf-objdump -d cnt1tn.o|less
+```
+![D2disassembly](https://github.com/Srini-web/pes_asic_class/assets/77874288/4c7b2ddb-2880-4551-ae06-a0ee8eb13592)
+
+</details>
+
+<details>
+<summary>RISCV CPU verification using iverilog</summary>
+  
++ verification of CPU using verilog
+   + using vim command
+```
+vim picorv32.v
+```
+![D2cpuss2](https://github.com/Srini-web/pes_asic_class/assets/77874288/90b92f7e-b750-4197-8904-1d2052794604)
+
+  + using less command
+```
+less picorv32.v
+```
+![D2cpuss](https://github.com/Srini-web/pes_asic_class/assets/77874288/0dae9f41-ebc0-4ab3-9bf1-d99eafc3568d)
+
+
+</details>
 
 
