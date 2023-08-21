@@ -55,6 +55,19 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 
 
 ## Day 2
+### Application Binary Interface
++ An Application Binary Interface (ABI) is a set of rules and conventions that dictate how binary code interacts with and communicates with other binary code, typically at the level of machine code or compiled code. In simpler terms, it defines the interface between two software components or systems that are written in different programming languages, compiled by different compilers, or running on different hardware architectures.
++ The ABI is crucial for enabling interoperability between different software components, such as different libraries, object files, or even entire programs. It allows components compiled independently and potentially on different platforms to work seamlessly together by adhering to a common set of rules for communication and data representation.
++ RISC V architecture being currently used uses Little Endian memory allocation
+   + In little-endian representation, you store the least significant byte (LSB) at the lowest memory address and the most significant byte (MSB) at the highest memory address.
++ Given the 5 bits which are allocated, 2^5 or 32 bits are used for memory allocation.
++ An ABI table is refered to where every register is mapped to a particular variable/function.
+<img width="430" alt="ABITable" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/4ca9c3cb-6253-43cd-8bac-a66090687d17">
+
+### Running C program using ABI Function calls
++ In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
+ <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
+
 <details>
 <summary>Create cnt1t9.c and load.S</summary>
   
