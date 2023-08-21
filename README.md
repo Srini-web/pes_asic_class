@@ -1,6 +1,15 @@
 # PES_ASIC_Class
 Name: Srinidhi B S        SRN: PES1UG20EC201 (VMSBS in the output stands for VM Srinidhi B S)
 ## Day1 
+### Instruction Set Architecture
++ ISA defines the interface between a computer's hardware and its software, specifically how the processor and its components interact with the software instructions that drive the execution of tasks. It encompasses a set of instructions, addressing modes, data types, registers, memory organization, and the mechanisms for executing and managing instructions
++ RISC V refers to Reduced Instruction Set Computing - Five Architecture. It is an open-source Instruction Set Architecture (ISA) that has gained significant attention and adoption in the world of computer architecture and semiconductor design.
+### Integer Number Representation
++ Unsigned numbers:- also known as non-negative numbers, are numerical values that represent magnitudes without indicating direction or sign.(Range: [0, (2^n)-1 ])
++ Signed numbers are numerical values that can represent both positive and negative magnitudes, along with zero.(Range : Positive : [0 , 2^(n-1)-1] Negative : [-1 to 2^(n-1)])
+  
+ <img width="536" alt="Signmemalloc" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/86000e0f-e3bc-4ae3-8c54-ce5f41b5a932">
+ 
 Dropdown
 <details>
 <summary>Run sum1ton.c</summary>
@@ -67,7 +76,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 ### Running C program using ABI Function calls
 + In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
  <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
-
+Dropdown
 <details>
 <summary>Create cnt1t9.c and load.S</summary>
   
