@@ -19,6 +19,8 @@ Dropdown
 gcc sum1ton.c
 ./a.out
 ```
+<img width="365" alt="Run1" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/6610f24b-18f5-4e77-b069-364047e482ab">
+
 </details>
 <details>
 <summary>GCC compile modes and disassemble instruction comparison</summary>
@@ -48,7 +50,8 @@ riscv64-unknown-elf-objdump -d sum1ton.o
   
 + Spike simulation
   
-  ![d1t3](https://github.com/Srini-web/pes_asic_class/assets/77874288/5a63c4d9-0086-48fb-aa95-d71c1c783e08)
+![s1](https://github.com/Srini-web/pes_asic_class/assets/77874288/1afad98b-d71c-4b11-91d6-991c862e1ebb)
+
 </details>
 <details>
 <summary>Finding the maximum and minimum values of a long long unsigned and signed integer</summary>
@@ -56,11 +59,9 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 + Finding the maximum and minimum values of a long long unsigned integer
     + Also finding out what happens when the value assigned is beyond the datatype range
       
-  <img width="559" alt="usnmaxf" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/cea84d41-2cfa-49e8-a999-ad6530e8dcd4">
+  <img width="560" alt="s2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/7629b726-9c9d-4d56-a838-88b213468e66">
+
 </details>
-
-
-
 
 
 ## Day 2
