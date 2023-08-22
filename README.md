@@ -51,7 +51,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
   ![d1t3](https://github.com/Srini-web/pes_asic_class/assets/77874288/5a63c4d9-0086-48fb-aa95-d71c1c783e08)
 </details>
 <details>
-<summary>Finding the maximum and minimum values of a long long unsigned integer</summary>
+<summary>Finding the maximum and minimum values of a long long unsigned and signed integer</summary>
   
 + Finding the maximum and minimum values of a long long unsigned integer
     + Also finding out what happens when the value assigned is beyond the datatype range
