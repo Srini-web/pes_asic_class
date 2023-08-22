@@ -76,6 +76,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 ### Running C program using ABI Function calls
 + In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
  <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
+ 
 + CPU Functioning
   
 <img width="502" alt="insert" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/d9da06e4-242c-449e-9b4b-a80acc6c48a9">
@@ -98,7 +99,7 @@ leafpad load.S
 + Run c program file and function in assembly language
 ```
 riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o cnt1t9.o cnt1t9.c load.S
-spike pk cnt1tn.o
+spike pk cnt1t9.o
 ```
 
 <img width="531" alt="s1" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/b91d2dab-0d0d-44ae-92c2-8090aa048adb">
