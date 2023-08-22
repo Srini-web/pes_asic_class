@@ -76,6 +76,10 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 ### Running C program using ABI Function calls
 + In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
  <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
++ CPU Functioning
+  
+<img width="502" alt="insert" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/d9da06e4-242c-449e-9b4b-a80acc6c48a9">
+
  
 Dropdown
 <details>
@@ -91,12 +95,13 @@ leafpad load.S
 <details>
 <summary>Run and simulate using spike</summary>
   
-+ Run c program file and function in assemly language
++ Run c program file and function in assembly language
 ```
 riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o cnt1t9.o cnt1t9.c load.S
 spike pk cnt1tn.o
 ```
-<img width="571" alt="D2run2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/09798d44-3a40-42da-a274-99496613d647">
+
+<img width="531" alt="s1" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/b91d2dab-0d0d-44ae-92c2-8090aa048adb">
 
 
 </details>
@@ -107,7 +112,7 @@ spike pk cnt1tn.o
 ```
 riscv64-unknown-elf-objdump -d cnt1tn.o|less
 ```
-![D2disassembly](https://github.com/Srini-web/pes_asic_class/assets/77874288/4c7b2ddb-2880-4551-ae06-a0ee8eb13592)
+<img width="448" alt="s2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/d1bb18cf-9b3f-4737-8b19-a02d27870b5f">
 
 </details>
 
@@ -119,15 +124,33 @@ riscv64-unknown-elf-objdump -d cnt1tn.o|less
 ```
 vim picorv32.v
 ```
-![D2cpuss2](https://github.com/Srini-web/pes_asic_class/assets/77874288/90b92f7e-b750-4197-8904-1d2052794604)
+![s3](https://github.com/Srini-web/pes_asic_class/assets/77874288/f49b626b-b6ef-469e-91a2-718d3a98919c)
+
 
   + using less command
 ```
 less picorv32.v
 ```
-![D2cpuss](https://github.com/Srini-web/pes_asic_class/assets/77874288/0dae9f41-ebc0-4ab3-9bf1-d99eafc3568d)
 
+![s4](https://github.com/Srini-web/pes_asic_class/assets/77874288/d37d6754-fb5f-4d3c-9632-0974ec25e38e)
+  
+ + running iverilog and testbench
+```
+vim picorv32.v
+vim testbench.v
+vim rv32im.sh
+chmod 777 rv32im.sh
+./rv32im.sh
+```
 
+<img width="439" alt="vimrins5" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/0b39bfc9-8065-4ab2-9858-229919b3147e">
+
+  + genrating hexadecimal (HEX file)
+```
+vim firmare.hex
+```
+  <img width="467" alt="s6" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/ce2201f4-40a5-4b8b-9722-39d723b60d82">
+  
 </details>
 
 
