@@ -3,6 +3,7 @@ Name: Srinidhi B S        SRN: PES1UG20EC201
 ## Day1 
 ### Instruction Set Architecture
 <details>
+  
   <summary>Theory</summary>
 + ISA defines the interface between a computer's hardware and its software, specifically how the processor and its components interact with the software instructions that drive the execution of tasks. It encompasses a set of instructions, addressing modes, data types, registers, memory organization, and the mechanisms for executing and managing instructions
 + RISC V refers to Reduced Instruction Set Computing - Five Architecture. It is an open-source Instruction Set Architecture (ISA) that has gained significant attention and adoption in the world of computer architecture and semiconductor design.
@@ -73,6 +74,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 ## Day 2
 ### Application Binary Interface
 <details>
+  
   <summary>Theory</summary>
 + An Application Binary Interface (ABI) is a set of rules and conventions that dictate how binary code interacts with and communicates with other binary code, typically at the level of machine code or compiled code. In simpler terms, it defines the interface between two software components or systems that are written in different programming languages, compiled by different compilers, or running on different hardware architectures.
 + The ABI is crucial for enabling interoperability between different software components, such as different libraries, object files, or even entire programs. It allows components compiled independently and potentially on different platforms to work seamlessly together by adhering to a common set of rules for communication and data representation.
@@ -85,6 +87,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 
 ### Running C program using ABI Function calls
 <details>
+  
   <summary>Theory</summary>
 + In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
  <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
