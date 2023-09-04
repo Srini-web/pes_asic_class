@@ -83,8 +83,8 @@ riscv64-unknown-elf-objdump -d sum1ton.o
 + The ABI is crucial for enabling interoperability between different software components, such as different libraries, object files, or even entire programs. It allows components compiled independently and potentially on different platforms to work seamlessly together by adhering to a common set of rules for communication and data representation.
 + RISC V architecture being currently used uses Little Endian memory allocation
    + In little-endian representation, you store the least significant byte (LSB) at the lowest memory address and the most significant byte (MSB) at the highest memory address.
-+ Given the 5 bits which are allocated, 2^5 or 32 bits are used for memory allocation.
-+ An ABI table is refered to where every register is mapped to a particular variable/function.
++ Given the 5 bits that are allocated, 2^5 or 32 bits are used for memory allocation.
++ An ABI table is referred to where every register is mapped to a particular variable/function.
 <img width="430" alt="ABITable" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/4ca9c3cb-6253-43cd-8bac-a66090687d17">
 </details>
 
@@ -93,7 +93,7 @@ riscv64-unknown-elf-objdump -d sum1ton.o
   
   <summary>Theory</summary>
   
-+ In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call suceeds.
++ In this program, a base(caller) c program calls a function written in assembly-level language. While they are both manipulated using ABI, the function call succeeds.
  <img width="407" alt="ABIFLOW" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e046f952-d4b3-4239-8379-415eba3ae42e">
  
 + CPU Functioning
@@ -361,3 +361,315 @@ yosys
 
 
 </details>
+
+## Day 4
+### Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
+
+<details>
+<summary> Theory </summary>	
+  
++ libraries in yosys
+  + The first line in the file `library ("sky130_fd_sc_hd__tt_025C_1v80") ` :
+    
+    - tt: indicates variations due to process and here it indicates **Typical Process**.
+    - 025C: indicates the variations due to temperatures where the silicon will be used.
+    - 1v80: indicates the variations due to the voltage levels where the silicon will be incorporated.
+      
+ **Hierarchical Synthesis**
+  Hierarchical synthesis is an approach in digital design and logic synthesis where complex designs are broken down into smaller, more manageable modules or sub-circuits, and each module is synthesized individually. These synthesized modules are then integrated back into the overall design hierarchy. This approach helps manage the complexity of large designs and allows designers to work on different parts of the design independently. 
+
+ **Flattened Synthesis**
+  Flattened synthesis is the opposite of hierarchical synthesis. Instead of maintaining the hierarchical structure of the design during synthesis, flattened synthesis combines all modules and sub-modules into a single, flat representation. This means that the entire design is synthesized as a single unit, without preserving the modular organization present in the original high-level description.
+
+**Why do we need a Flop?**
+
++ A flip-flop (often abbreviated as "flop") is a fundamental building block in digital circuit design.
++ It's a type of sequential logic element that stores binary information (0 or 1) and can change its output based on clock signals and input values.
++ In a combinational circuit, the output changes after the propagation delay of the circuit once inputs are changed.
++ During the propagation of data, if there are different paths with different propagation delays, then a glitch might occur.
++ There will be multiple glitches for multiple combinational circuits.
++ Hence, we need flops to store the data from the combinational circuits.
++ When a flop is used, the output of combinational circuit is stored in it and it is propagated only at the posedge or negedge of the clock so that the next combinational circuit gets a glitch free input thereby stabilising the output.
++ We use control pins like **set** and **reset** to initialise the flops.
++ They can be synchronous and asynchronous.
+
+</details>  
+<details>
+  <summary> Introduction to Timing Dot Libs </summary>	
+  
++ To view the contents in the .lib
+```
+gvim ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+![s1dotappl](https://github.com/Srini-web/pes_asic_class/assets/77874288/0e37b704-3c54-454a-a108-1ca563283200)
+
+ 
++ It also displays the units of various parameters and cells.
+
+![s2dotlibclass](https://github.com/Srini-web/pes_asic_class/assets/77874288/6632c33b-1786-46c2-b07c-7bb83bf1245d)
+
++ It gives the features of the cells
+  + To enable line number `:se nu`
+  ![s3serno](https://github.com/Srini-web/pes_asic_class/assets/77874288/d32b885a-93c7-4a26-b3da-3f6ce1d41d1b)
+
++ To view any instance `:/instance`
+  + Since there are 5 inputs, for all the 32 possible combinations, it gives the delay, power, and all the other parameters for each cell.
+  + The below image shows the power consumption and area comparison.
+  
+![s4 1comp](https://github.com/Srini-web/pes_asic_class/assets/77874288/24fa7730-0bfa-4331-8039-794669ab1add)
+
+</details>
+
+<details>
+<summary> Hierarchical Synthesis Flat Synthesis </summary>	
+  
++ The file we used in this lab is multiple_modules.v
+  
+  ```
+  cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+  gvim multiple_modules.v
+  ```
+
+![s5file](https://github.com/Srini-web/pes_asic_class/assets/77874288/136819b9-5e96-4d19-a9d2-22192abfcb97)
+
+
++  `multiple_modules` instantiates `sub_module1` and `sub_module2`
+
+```
+Launch yosys
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog multiple_modules.v
+synth -top multiple_modules
+```
+
+![s6yosys](https://github.com/Srini-web/pes_asic_class/assets/77874288/fd46db6d-9f8b-45ed-a96c-925ac82bd2eb)
+
++  Netlist generation
+  
+  ```
+  abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib`
+  show multiple_modules
+  ```
+
+![s7moduleload](https://github.com/Srini-web/pes_asic_class/assets/77874288/c3386884-ef18-42c9-9a3a-1c997219a64b)
+
+```
+write_verilog -noattr multiple_modules_hier.v
+!gvim multiple_modules_hier.v
+```
+
+
+![s8submoduleload](https://github.com/Srini-web/pes_asic_class/assets/77874288/ed9c6d8b-7100-4a14-84d2-94d0eca10618)
+
+![s9submoddiag](https://github.com/Srini-web/pes_asic_class/assets/77874288/01d74903-1338-4066-90b1-ac8fe6719ce9)
+
+
++  Flattened Synthesis
+  ```
+  yosys
+  read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+  synth -top multiple_modules
+  abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+  flatten
+  show
+  ```
+  
+![s10flatteneddiag](https://github.com/Srini-web/pes_asic_class/assets/77874288/db029588-9994-4a2e-bd1f-04981bfb4365)
+
+```
+write_verilog -noattr multiple_modules_flat.v`
+!gvim multiple_modules_flat.v
+```
+  ![s11befflat](https://github.com/Srini-web/pes_asic_class/assets/77874288/9736cae1-c6f6-4276-be9d-ee05f375ecd8)
+  ![s12afflat](https://github.com/Srini-web/pes_asic_class/assets/77874288/ebf2d734-130c-443f-97bd-9e0d928a413a)
+
+</details>
+
+
+<details>
+<summary> D Flip-flop review </summary>	
+
++ D Flip-Flop with Asynchronous Reset
+  + When the reset is high, the output of the flip-flop is forced to 0, irrespective of the clock signal.
+  + Else, on the positive edge of the clock, the stored value is updated at the output.
+ ```
+  gvim dff_asyncres_syncres.v
+ ```
+   ![s13dasres](https://github.com/Srini-web/pes_asic_class/assets/77874288/2a2bc0c9-abd8-4f59-90a9-9c4b8932787c)
+
+
++ D Flip_Flop with Asynchronous Set
+  + When the set is high, the output of the flip-flop is forced to 1, irrespective of the clock signal.
+  + Else, on positive edge of the clock, the stored value is updated at the output.
+
+```
+gvim dff_async_set.v
+```
+
+![s14dasset](https://github.com/Srini-web/pes_asic_class/assets/77874288/2a77a30a-2e9f-4d59-a779-ccc5fed5731e)
+
+
++ D Flip-Flop with Synchronous Reset
+  + When the reset is high on the positive edge of the clock, the output of the flip-flop is forced to 0.
+  + Else, on the positive edge of the clock, the stored value is updated at the output.
+
+```
+gvim dff_syncres.v
+```
+
+![s15dsres](https://github.com/Srini-web/pes_asic_class/assets/77874288/40a5b9ca-8390-4bc7-a4c0-9770ea65492c)
+
++ D Flip-Flop with Asynchronous Reset and Synchronous Reset
+  + When the asynchronous reset is high, the output is forced to 0.
+  + When the synchronous reset is high at the positive edge of the clock, the output is forced to 0.
+  + Else, on the positive edge of the clock, the stored value is updated at the output.
+  + Here, it is a combination of both synchronous and asynchronous reset DFF.
+
+```
+gvim dff_asyncres_syncres.v
+```
+
+![s16dsynasynrst](https://github.com/Srini-web/pes_asic_class/assets/77874288/0b1dd71b-a36a-431c-92c1-c45a0c040017)
+
+
+</details>
+
+<details>
+<summary> Lab Flop Synthesis and Simulations </summary>	
+
++ D Flip-Flop with Asynchronous Reset
+  + Simulation
+    ```
+    cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+    iverilog dff_asyncres.v tb_dff_asyncres.v
+    ./a.out
+    gtkwave tb_dff_asyncres.vcd
+    ```
+  
+
+   ![s16simul](https://github.com/Srini-web/pes_asic_class/assets/77874288/361b062d-4000-45da-8250-f9ae73d24efa)
+
+
+
+  + Synthesis
+    ```
+    cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+    yosys
+    read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    read_verilog dff_asyncres.v
+    synth -top dff_asyncres
+    dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    show
+    ```
+   
+    <img width="925" alt="s17synth" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/d92920ea-1c72-4be8-bd7b-a26ac75f75a6">
+
+ + D Flip_Flop with Asynchronous Set
+   + Simulation
+     ```
+     cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+     iverilog dff_async_set.v tb_dff_async_set.v
+     ./a.out
+     gtkwave tb_dff_async_set.vcd
+     ```
+
+![s18simul2](https://github.com/Srini-web/pes_asic_class/assets/77874288/cddf0a2b-252d-41b0-bf4e-f15b1deba4d1)
+
+  + Synthesis
+```
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+yosys
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_async_set.v`
+synth -top dff_async_set
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+<img width="922" alt="s19synth2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/89d2d27c-18b4-45c2-9052-a12f5ed70148">
+
+
++ D Flip-Flop with Synchronous Reset
+  + Simulation
+  ```  
+  cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+  iverilog dff_syncres.v tb_dff_syncres.v
+  ./a.out
+  gtkwave tb_dff_syncres.vcd
+   ``` 
+
+  ![s20simul3](https://github.com/Srini-web/pes_asic_class/assets/77874288/649d05d6-34be-4d10-93c1-34ad70b6f9aa)
+
+ 
+  + Synthesis
+  ```
+  cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+  yosys
+  read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+  read_verilog dff_syncres.v
+  synth -top dff_syncres
+  dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+  abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+  show
+  ```
+
+<img width="925" alt="s21synth3" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/f5ba1e8f-6dc2-4f68-bf61-23db96e779dc">
+
+</details>
+
+<details>
+<summary> Interesting Optimisations </summary>	
+
+```
+gvim mult_2.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog mult_2.v
+synth -top mul2
+```
+
+![s22nosynth](https://github.com/Srini-web/pes_asic_class/assets/77874288/e0d2d63c-b1f2-42be-b64c-756de22f037f)
+
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+
+![s23diag](https://github.com/Srini-web/pes_asic_class/assets/77874288/960b508e-dcde-4377-8522-dee1556cbbbe)
+
+```
+write_verilog -noattr mul2_netlist.v
+!gvim mul2_netlist.v
+```
+  <img width="436" alt="s24c1" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/0643321d-a40a-44ca-a68e-ae9a6f9fa553">
+
+
+```
+gvim mult_8.v
+```
+<img width="443" alt="s25c2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/e5db84ea-d62e-4ef4-b550-4ede689e8a3a">
+
+``` 
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib  
+read_verilog mult_8.v
+synth -top mult8
+```
+<img width="202" alt="s26op2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/6838fdc6-9a89-4e45-ac8a-25e49a5c2b47">
+
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+<img width="305" alt="s27diag2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/4ca57c53-c118-4f7a-ae0f-198f2db9a27a">
+
+
+```
+write_verilog -noattr mult8_netlist.v
+!gvim mult8_netlist.v
+```
+<img width="377" alt="s28c3" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/c160860c-702e-4230-9d21-dab61dd1f815">
+
+</details>
+
