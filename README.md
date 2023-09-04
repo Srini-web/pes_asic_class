@@ -803,7 +803,7 @@ show
 ```
 gvim dff_const1.v
 iverilog dff_const1.v tb_dff_const1.v
-/a.out
+./a.out
 gtkwave tb_dff_const1.vcd
 ```
 
@@ -831,7 +831,7 @@ show
 ```  
 gvim dff_const2.v
 iverilog dff_const2.v tb_dff_const2.v
-/a.out
+./a.out
 gtkwave tb_dff_const2.vcd
 ```
 
@@ -860,7 +860,7 @@ show
 ```
 gvim dff_const3.v
 iverilog dff_const3.v tb_dff_const3.v
-/a.out
+./a.out
 gtkwave tb_dff_const3.vcd
 ```
 
@@ -890,7 +890,7 @@ show
  ``` 
 gvim dff_const4.v
 iverilog dff_const4.v tb_dff_const4.v
-/a.out
+./a.out
 gtkwave tb_dff_const4.vcd
 ```
 ![s13dff4](https://github.com/Srini-web/pes_asic_class/assets/77874288/879957c2-92a5-4fc0-b350-3d708fcb0b41)
@@ -916,8 +916,8 @@ show
 + Simulation
 ```
 gvim dff_const5.v
-iverilog dff_const4.v tb_dff_const4.v
-/a.out
+iverilog dff_const5.v tb_dff_const5.v
+./a.out
 gtkwave tb_dff_const5.vcd
 ```
 
@@ -927,8 +927,8 @@ gtkwave tb_dff_const5.vcd
 
 ```
 read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-read_verilog dff_const4.v
-synth -top dff_const4
+read_verilog dff_const5.v
+synth -top dff_const5
 dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
 abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 show
