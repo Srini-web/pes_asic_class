@@ -173,4 +173,191 @@ vim firmare.hex
   
 </details>
 
+## Day 3
 
+### Introduction to Verilog RTL Design and Synthesis
+<details>
+<summary> Theory </summary>
+
+ - **Simulator**
+   - It is a tool used for simulating the design. It looks for the changes in the input signals to evaluate the outputs.
+   - If there is no change in the inputs, the simulator doesn't evaluate the outputs.
+   - RTL is checked for adherence to the spec by simulating the design.
+   - The tool used here is **iverilog**.
+
+- **iVerilog**
+  -  It is an open-source Verilog simulator used for testing and simulating digital circuit designs described in the Verilog hardware description language (HDL).
+  -  Both the design and the testbench are fed to the simulator and it produces a vcd (value change dump) file.
+  -  In order to view the vcd file, we use the GTKwave where we can see the waveforms.
+    
+   <img width="526" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/37b643b5-e41e-425d-85f0-a55d7e190571">
+
+- **Design**
+  - It is the actual verilog code or set of verilog codes that the intended functionality to meet the required specifications.
+  - Verilog is used to describe the behavior and structure of digital circuits at different levels of abstraction, from high-level system descriptions down to low-level gate-level representations. 
+
+- **Testbench**
+  - A testbench is a specialized Verilog module or program used to verify the functionality and behavior of another Verilog module, circuit, or design. Testbenches are essential for testing and simulating digital designs before they are synthesized or manufactured as physical chips.
+  - It is a setup to apply a stimulus to the design to check its functionality.
+
+    <img width="526" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/72e6ffe4-abba-41f1-b79f-240f125b410b">
+
+ + **Synthesizer**
+  - It is a tool used for converting RTL design code to netlist.
+  - Here, the synthesizer used is **Yosys**.
+
++ **Yosys**
+  - It is an open-source framework for Verilog RTL synthesis and formal verification.
+  - Yosys provides a collection of tools and algorithms that enable designers to transform high-level RTL (Register Transfer Level) descriptions of digital circuits into optimized gate-level representations suitable for physical implementation on hardware.
+
+ <img width="561" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/5f879aaa-ec65-4362-9f91-f39999069732">
+
+   - Design and .lib files are fed to the synthesizer to get a netlist file.
+   - **Netlist** is the representation of the design in the form of standard cells in the .lib
+     
++ Commands used to perform different operations:
+  - `read_verilog` to read the design
+  - `read_liberty` to read the .lib file
+  - `write_verilog` to write out the netlist file
+ 
++ To verify the synthesis
+
+<img width="566" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/fd73f6b8-f594-4e4f-bb1a-b600fb4475f8">
+
+   - Netlist along with the testbench is fed to the iverilog simulator.
+   - The vcd file generated is fed to the gtkwave simulator.
+   - The output on the simulator must be the same as the output observed during RTL simulation.
+   - The same RTL testbench can be used as the primary inputs and primary outputs remain same between the RTL design and synthesised netlist.
+
+ + **Logic Synthesis**
+  - Logic synthesis is a process in digital design that transforms a high-level hardware description of a digital circuit, typically in a hardware description language (HDL) like Verilog or VHDL, into a lower-level representation composed of logic gates and flip-flops.
+  - The goal of logic synthesis is to optimize the design for various criteria such as performance, area, power consumption, and timing.
+
+ + **.lib**
+   - It is a collection of logical modules like And, Or, Not etc.
+   - It has different flavors of same gate like 2 input AND gate, 3 input AND gate etc with different performace speed.
+  
++ **Why different flavors  of gate?**
+  - In order to make a circuit faster, the clock frequency should be high.
+  - For that, the time period of the clock should be as low as possible.
+  
+<img width="400" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/bc2242db-49e8-4c19-a06e-8f8e82f55729">
+
++ In a sequential circuit, clock period depends on:
+  - Clock to Q of flip-flop A.
+  - Propagation delay of combinational circuit.
+  - Setup time of flip-flop B.
+
+<img width="400" alt="image" src="https://github.com/Veda1809/pes_asic_class/assets/142098395/112de4cd-6e0c-46ec-ad94-0cb6540af7e1">
+
++ **Why need fast and slow cells?**
+  - To ensure that there are no HOLD issues at flip-flop B, we require slow cells.
+  - For a smaller propagation time, we need faster cells.
+  - The collection forms the .lib
+
++ **Faster Cells vs Slower Cells**
+  - Load in digital circuit is of Capacitence.
+  - Faster the charging or dicharging of capacitance, lesser is the cell delay.
+  - However, for a quick charge/ discharge of capacitor, we need transistors capable of sourcing more current i.e, we need **wide transistors**.
+  - Wider transistors have lesser delay but consume more area and power.
+  - Narrow transistors have more delay but consume less area and performance.
+  - Faster cells come with a cost of area and power.
+ 
++ **Selection of the Cells**
+  - We have to guide the Synthesizer to choose the flavour of cells that is optimum for implementation of logic circuit.
+  - More use of faster cells leads to bad circuit in terms of power and area and also hold time violations.
+  - More use of slower cells leads to sluggish circuits amd may not meet the performance needs.
+  - Hence the guidance is offered to the synthesiser in the form of **constraints**. 
+
+ - **Setup**
+   - Contains sky130RTLDesignAndSynthesisWorkshop folder which contains
+    - my_lib: contains all the library files
+    - lib: contains sky130 standard cell library used for our synthesis
+    - verilog_model: contains all the standard cell verilog modules of the standard cells contained in the .lib
+    - verilog_files: contains all the verilog source files and testbench files that are required for labs
+
+</details>
+
+
+
+<details>
+<summary> iVerilog GTKwave </summary>	
+
+```
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+ls
+```
+![s1verilogfiles](https://github.com/Srini-web/pes_asic_class/assets/77874288/6c2f3048-5342-438f-956f-4cdee3604e6e)
+
+```
+iverilog good_mux.v tb_good_mux.v
+./a.out
+gtkwave tb_good_mux.vcd
+```
+
+![s2goodmuxrun](https://github.com/Srini-web/pes_asic_class/assets/77874288/cd3c3ce0-54f1-4268-81cc-aaaab905d885)
+
+![s3gtk1](https://github.com/Srini-web/pes_asic_class/assets/77874288/22c308a1-cfaf-4edc-aefe-b2ba2219f28d)
+
+```
+gvim tb_good_mux.v -o good_mux.v
+```
+![s3gtk2](https://github.com/Srini-web/pes_asic_class/assets/77874288/90449417-dc0c-4edb-a842-cfd87de0d78c)
+
+</details>
+
+<details>
+<summary> Yosys good_mux  </summary>	
+
++ To invoke yosys
+```
+cd
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+yosys
+```
+![s4yosys](https://github.com/Srini-web/pes_asic_class/assets/77874288/2dabd406-6263-4bcd-94b0-8412e8dba545)
+
++ To read the library, design and synthesize a module named "good_mux.v"
+  ```
+  read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+  read_verilog good_mux.v
+  synth -top good_mux
+  ```
+  
+![s5yosysdesread](https://github.com/Srini-web/pes_asic_class/assets/77874288/93b46c6b-85a4-4ae4-a13f-41227c4c8c23)
+
+![s6yosyssynth](https://github.com/Srini-web/pes_asic_class/assets/77874288/4a405886-992a-4b2f-8c4c-8340f36983bb)
+
+   
+ + Generate the netlist
+   ```
+   abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+   ```
+
+ ![s7yosysnetlist](https://github.com/Srini-web/pes_asic_class/assets/77874288/85d7298a-d438-4dd0-b2b9-fefa7676ef18)
+
+
++ To see the logic realized
+  ```
+  show
+  ```
+  
+![s8yosysshow](https://github.com/Srini-web/pes_asic_class/assets/77874288/04abfbfd-c6f4-4520-9f97-234264db7a6d)
+
+
++ To write the netlist
+  ```
+  write_verilog good_mux_netlist.v
+  !gvim good_mux_netlist.v
+  ```
+  ![s9yosyswrnl](https://github.com/Srini-web/pes_asic_class/assets/77874288/832a9261-1c64-4d35-a176-6c89f91861ae)
+
+  + To view a simplified code
+    ```
+    write_verilog -noattr good_mux_netlist.v     
+    !gvim good_mux_netlist.v
+    ```
+     ![s10yosysnlsimp](https://github.com/Srini-web/pes_asic_class/assets/77874288/3aa56285-4512-4e8b-a7ec-bd5431c5f779)
+
+
+</details>
