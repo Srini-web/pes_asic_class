@@ -1,4 +1,4 @@
-# PES_ASIC_Class
+![s1code](https://github.com/Srini-web/pes_asic_class/assets/77874288/f89d27dc-2316-42a9-8ded-249332ac1de3)# PES_ASIC_Class
 Name: Srinidhi B S        SRN: PES1UG20EC201 
 ## Day1 
 ### Instruction Set Architecture
@@ -673,3 +673,302 @@ write_verilog -noattr mult8_netlist.v
 
 </details>
 
+
+## Day 5
+###  Combinational and sequential optimizations
+#### Theory
+<details>
+<summary> Theory : Combinational Optimisation </summary>
+	
++ Combinational logic refers to logic circuits where the outputs depend only on the current inputs and not on any previous states.
++ Combinational optimization is a field of study in computer science and operations research that focuses on finding the best possible solution from a finite set of options for problems that involve discrete variables and have no inherent notion of time.
++ Optimising the combinational logic circuit is squeezing the logic to get the most optimized digital design so that the circuit finally is area and power efficient.
++ Techniques for Optimisations:
+  - **Constant propagation** is an optimization technique used in compiler design and digital circuit synthesis to improve the efficiency of code and circuit implementations by replacing variables or expressions with their constant values where applicable.
+  - **Boolean logic optimization**, also known as logic minimization or Boolean function simplification, is a process in digital design that aims to simplify Boolean expressions or logic circuits by reducing the number of terms, literals, and gates required to implement a given logical function.
+
+</details>
+
+<details>
+<summary> Theory : Sequential Logic Optimisations </summary>	
+
++ Sequential logic optimizations involve improving the efficiency, performance, and resource utilization of digital circuits that include memory elements like flip-flops and latches.
++ Optimizing sequential logic is crucial in ensuring that digital circuits meet timing requirements, consume minimal power, and occupy the least possible area while maintaining correct functionality.
++ Optimisation methods:
+  - **Sequential constant propagation**, also known as constant propagation across sequential elements, is an optimization technique used in digital design to identify and propagate constant values through sequential logic elements like flip-flops and registers. This technique aims to replace variable values with their known constant values at various stages of the logic circuit, optimizing the design for better performance and resource utilization.
+  - **State optimization**, also known as state minimization or state reduction, is an optimization technique used in digital design to reduce the number of states in finite state machines (FSMs) while preserving the original functionality.
+  - **Sequential logic cloning**, also known as retiming-based cloning or register cloning, is a technique used in digital design to improve the performance of a circuit by duplicating or cloning existing registers (flip-flops) and introducing additional pipeline stages. This technique aims to balance the critical paths within a circuit and reduce its overall clock period, leading to improved timing performance and better overall efficiency.
+  - **Retiming** is an optimization technique used in digital design to improve the performance of a circuit by repositioning registers (flip-flops) along its paths to balance the timing and reduce the critical path delay. The primary goal of retiming is to achieve a shorter clock period without changing the functionality of the circuit.
+ 
+</details>
+
+#### Combinational Logic Optimisation 
+<details>
+<summary> opt_check </summary>	
+	
+```
+gvim opt_check.v
+```
+![s1code](https://github.com/Srini-web/pes_asic_class/assets/77874288/cc3d71c8-ddf6-4e1c-9b3b-0032f6678524)
+
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog opt_check.v
+synth -top opt_check
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+ ![s2op](https://github.com/Srini-web/pes_asic_class/assets/77874288/0d255928-5568-4b56-b2fb-517b32fbf13f)
+
+
+</details>
+
+<details>
+<summary> opt_check2 </summary>	
+	
+```
+gvim opt_check2.v`
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog opt_check2.v
+synth -top opt_check2
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+ 
+![s3op2](https://github.com/Srini-web/pes_asic_class/assets/77874288/707a8cc8-9ace-492e-813b-a8c43bba8aa6)
+
+</details>
+
+<details>
+<summary> opt_check3 </summary>	
+	
+```
+gvim opt_check3.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog opt_check3.v
+synth -top opt_check3
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s4op3](https://github.com/Srini-web/pes_asic_class/assets/77874288/badbf03d-d8c4-4a5f-8818-2cf6adb9201d)
+
+</details>
+
+<details>
+<summary> opt_check4 </summary>
+	
+```
+gvim opt_check4.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog opt_check4.v
+synth -top opt_check4
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s5op4](https://github.com/Srini-web/pes_asic_class/assets/77874288/156fcc50-30f2-4f85-8477-e6bac76c186d)
+
+</details>
+
+<details>
+<summary> multiple_module_opt </summary>
+	
+```
+gvim multiple_module_opt.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog multiple_module_opt.v
+synth -top multiple_module_opt
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+![s6op5](https://github.com/Srini-web/pes_asic_class/assets/77874288/63b9746a-0a10-47dd-87e2-3ec01be1f213)
+
+<img width="301" alt="s6 2op5" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/7a84ba38-e617-4ddf-b41f-c5a868c90b27">
+
+</details>
+
+#### Sequential Logic Optimisations
+
+<details>
+<summary> dff_const1 </summary>	
+
++ Simulation
+```
+gvim dff_const1.v
+iverilog dff_const1.v tb_dff_const1.v
+/a.out
+gtkwave tb_dff_const1.vcd
+```
+
+![s7dff1](https://github.com/Srini-web/pes_asic_class/assets/77874288/4687bc6d-1b7a-494f-b549-f96758c5bd8f)
+
++ Synthesis
+
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_const1.v
+synth -top dff_const1
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s8op1](https://github.com/Srini-web/pes_asic_class/assets/77874288/9e85d0ec-162e-4f8d-8b99-531acc5eaab5)
+
+</details>
+
+<details>
+<summary> dff_const2 </summary>	
++ Simulation
+  
+```  
+gvim dff_const2.v
+iverilog dff_const2.v tb_dff_const2.v
+/a.out
+gtkwave tb_dff_const2.vcd
+```
+
+
+![s9dff2](https://github.com/Srini-web/pes_asic_class/assets/77874288/2a337dc0-243a-45f6-a966-c51845153a96)
+
+ + Synthesis
+ 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_const2.v
+synth -top dff_const2
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s10op2](https://github.com/Srini-web/pes_asic_class/assets/77874288/99326cd3-3e8e-4f7e-8634-2fad94d0c575)
+
+</details>
+
+<details>
+<summary> dff_const3 </summary>
++ Simulation
+
+```
+gvim dff_const3.v
+iverilog dff_const3.v tb_dff_const3.v
+/a.out
+gtkwave tb_dff_const3.vcd
+```
+
+![s11dff3](https://github.com/Srini-web/pes_asic_class/assets/77874288/6d02cd6a-d6d0-4f75-abfc-a8093ef5b6f7)
+
++ Synthesis
+
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_const3.v
+synth -top dff_const3
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+
+![s12op3](https://github.com/Srini-web/pes_asic_class/assets/77874288/fe820bb0-4e11-43c8-99d8-b5e464994eb2)
+
+</details>
+
+<details>
+<summary> dff_const4 </summary>	
+
++ Simulation
+
+ ``` 
+gvim dff_const4.v
+iverilog dff_const4.v tb_dff_const4.v
+/a.out
+gtkwave tb_dff_const4.vcd
+```
+![s13dff4](https://github.com/Srini-web/pes_asic_class/assets/77874288/879957c2-92a5-4fc0-b350-3d708fcb0b41)
+
++ Synthesis
+
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_const4.v
+synth -top dff_const4
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s13op4](https://github.com/Srini-web/pes_asic_class/assets/77874288/45eb59d6-df92-4b5f-876e-9432d7d069fc)
+
+</details>
+
+<details>
+<summary> dff_const5 </summary>	
+
++ Simulation
+```
+gvim dff_const5.v
+iverilog dff_const4.v tb_dff_const4.v
+/a.out
+gtkwave tb_dff_const5.vcd
+```
+
+![s15dff5](https://github.com/Srini-web/pes_asic_class/assets/77874288/71e9d404-de5d-4a8a-b6ba-e29ea5c8e2d7)
+
++ Synthesis
+
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_const4.v
+synth -top dff_const4
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+![s16op5](https://github.com/Srini-web/pes_asic_class/assets/77874288/88c9441c-0ab2-4893-ba91-0cf4f889c70f)
+
+
+</details>
+
+#### Counter Logic Optimisations
+<details>
+<summary> counter_opt </summary>
+
+ ```
+gvim counter_opt.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog counter_opt.v
+synth -top counter_opt
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+![s17ctr1](https://github.com/Srini-web/pes_asic_class/assets/77874288/c845b435-a9ff-4c6b-b778-f8ee410d540f)
+
+</details>
+
+<details>
+<summary> counter_opt2 </summary>	
+
+```
+gvim counter_opt2.v
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog counter_opt2.v
+synth -top counter_opt2
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+
+<img width="923" alt="s18ctr2" src="https://github.com/Srini-web/pes_asic_class/assets/77874288/1a444ed6-80d1-4534-bdaf-30bc0390b607">
+
+</details>
