@@ -1,4 +1,4 @@
-![s1code](https://github.com/Srini-web/pes_asic_class/assets/77874288/f89d27dc-2316-42a9-8ded-249332ac1de3)# PES_ASIC_Class
+# PES_ASIC_Class
 Name: Srinidhi B S        SRN: PES1UG20EC201 
 ## Day1 
 ### Instruction Set Architecture
